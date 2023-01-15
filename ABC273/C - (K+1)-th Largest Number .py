@@ -6,10 +6,10 @@ b = list(set(a))
 b.sort()
 m = len(b)
  
+# 各Aiについてそれがsetで言うと何番目なのかを二分探索で求める。そいつをans配列に入れる
 ans = [0] * n
 for i in range(n):
 	ans[m-bisect.bisect_right(b,a[i])] += 1
-0
 print(*ans,sep="\n")
 
 

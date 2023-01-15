@@ -1,3 +1,4 @@
+
 # https://github.com/tatyam-prime/SortedSet/blob/main/SortedMultiset.py
 import math
 from bisect import bisect_left, bisect_right, insort
@@ -131,22 +132,51 @@ class SortedMultiset(Generic[T]):
         return ans
 
 import sys
+from collections import defaultdict
 
 readline = sys.stdin.readline
-Q = int(readline())
+N = int(readline())
 S = SortedMultiset()
-for _ in range(Q):
-    query = list(map(int, input().split()))
-    q = query[0]
-    if q == 1:
-        x = query[1]
-        S.add(x)
-    elif q == 2:
-        x, k = query[1:]
-        c = S.index_right(x) # x以下の要素の数
-        print(S[c-k] if k<=c else -1)
-    else:  # q == 3
-        x, k = query[1:]
-        c = S.index(x) # x未満の要素の数
-        d = len(S)-c #x以上の要素の数
-        print(S[c+k-1] if k<=d else -1)
+T = SortedMultiset()
+graph = defaultdict(list)
+
+for i in range(N):
+    st = list(input().split())
+    s = st[0]
+    t = st[1]
+    graph[s].append(t)
+    S.add(s)
+# print(S,T)
+# print(graph)
+count = 0
+
+def judge(x):
+    if S.__contains__(x):
+        y = graph[x]
+        return judge(y)
+    return True
+
+
+while S.__len__()>0:
+    # 一周してもSの長さが同じなら不可
+    if count == len(S):
+        print("No")
+        exit()
+    count = len(S)
+    for i in range(len(S)):
+        small = S.__getitem__(i)
+        b = graph[small]
+        if S.__contains__(b[0]):
+            if judge(b[0]):
+                    print("No")
+                    exit()
+            continue
+        else:
+            T.add(small)
+    for i in T:
+        S.discard(i)
+print("Yes")
+
+
+
+

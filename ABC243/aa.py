@@ -1,8 +1,18 @@
 
+V,A,B,C = map(int,input().split())
 
-S = input()
+now = V-A
 
-ans = "0"
-for i in range(3):
-    ans += S[i]
-print(str(ans))
+while True:
+    if now<0:
+        print("F")
+        exit()
+    now-=B
+    if now<0:
+        print("M")
+        exit()
+    now-=C
+    if now<0:
+        print("T")
+        exit()
+    now-=A

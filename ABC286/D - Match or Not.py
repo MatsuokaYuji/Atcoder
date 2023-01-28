@@ -16,6 +16,7 @@ for i in range(tl):
     else:
         break
 
+
 print(front_count, back_count)
 for x in range(tl+1):
     if front_count >= x and back_count >= tl - x:

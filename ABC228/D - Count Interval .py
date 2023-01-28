@@ -132,21 +132,41 @@ class SortedMultiset(Generic[T]):
 
 import sys
 
+
+def exe(x):
+    h = x % N
+    if A[h] == -1:
+        return h
+    nxt = S.gt(h)
+    if nxt is not None:
+        return nxt
+    else:
+        if A[0] == -1:
+            return 0
+        return S.gt(0)
+
+
+
+N = 2**20
+
+A = [-1] * N
+
 readline = sys.stdin.readline
 Q = int(readline())
 S = SortedMultiset()
+for i in range(N):
+    S.add(i)
+
 for _ in range(Q):
     query = list(map(int, input().split()))
-    q = query[0]
-    if q == 1:
-        x = query[1]
-        S.add(x)
-    elif q == 2:
-        x, k = query[1:]
-        c = S.index_right(x) # x以下の要素の数
-        print(S[c-k] if k<=c else -1)
-    else:  # q == 3
-        x, k = query[1:]
-        c = S.index(x) # x未満の要素の数
-        d = len(S)-c #x以上の要素の数
-        print(S[c+k-1] if k<=d else -1)
+    t = query[0]
+    x = query[1]
+    if t == 1:
+        pos = exe(x)
+        A[pos] = x
+        S.discard(pos)
+
+    else:
+        print(A[x%N])
+        
+    

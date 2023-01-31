@@ -7,13 +7,15 @@
 
 
 
-
-
 N = int(input())
-P = list(map(int, input().split()))
+S = list(map(int, input().split()))
+T = list(map(int, input().split()))
 
-Q = [[0] for _ in range(N)]
 
-for i in range(1,N+1):
-    Q[P[i-1]-1] = i
-print(*Q)
+for i in range(2*N):
+    T[(i+1)%N] = min(T[(i+1) % N],T[i%N] + S[i%N])
+    # print(T[(i+1)%N])
+
+
+for i in T:
+    print(i)

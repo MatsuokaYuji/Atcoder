@@ -133,20 +133,23 @@ class SortedMultiset(Generic[T]):
 import sys
 
 readline = sys.stdin.readline
-L,Q = map(int,readline().split())
+Q= int(input())
 
+count = 0
 S = SortedMultiset()
-S.add(0)
-S.add(L)
 for _ in range(Q):
     query = list(map(int, input().split()))
     q = query[0]
     if q == 1:
         x = query[1]
-        S.add(x)
+        S.add(x-count)
     elif q == 2:
         x = query[1]
-        c = S.ge(x) # x以上の最小要素が昇順何番目か
-        d = S.le(x)
-        print(c-d)
+        count+=x
+
+    else:
+        d = S.__getitem__(0)
+        S.discard(d)
+        print(d + count)
+
     

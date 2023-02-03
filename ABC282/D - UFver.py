@@ -33,25 +33,34 @@ class unionfind:
 	def same(self, u, v):
 		return self.root(u) == self.root(v)
 
+# https://qiita.com/Waaaa1471/items/fb2e1b0b3cd1a921054d#dmake-bipartite-2
 
-N = int(input())
-
-from collections import defaultdict
-d = defaultdict(int)
+N, M = map(int, input().split())
+edges = [ list(map(int, input().split())) for i in range(M) ]
+	
 # クエリの処理
-uf = unionfind(2 * N +2)
+uf = unionfind(2*N)
 
-for i in range(1,N+1):
-    S,T = map(str,input().split())
-    if d[S] == 0:
-        d[S] = 2*i
-    if d[T] == 0:
-        d[T] = 2*i + 1
-    if uf.same(d[S],d[T]):
-        print("No")
+for a, b in edges:
+    a-=1
+    b-=1
+    uf.unite(a,b+N)
+    uf.unite(b,a+N)
+
+for i in range(N):
+    if uf.same(i,i+N):
+        print(0)
         exit()
-    else:
-        uf.unite(d[S],d[T])
-print("Yes")
 
-   
+def com(n):
+    return n * (n-1)//2
+ans = com(N) - M 
+
+# 各連結成分(色別)の個数を、親で管理
+g = [0 for i in range(N)]
+for i in range(N):
+    g[uf.root(i)] +=1
+
+for j in range(N):
+    ans-=com(g[j])
+print(ans)

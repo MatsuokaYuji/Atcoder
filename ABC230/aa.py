@@ -3,11 +3,24 @@
 
 
 
-X,Y = map(int,input().split())
 
-ans = 0
 
-while X<Y:
-    ans+=1
-    X+=10
-print(ans)
+
+
+
+
+
+N = int(input())
+
+s = "AGC0"
+
+if N>=42:
+    s+=str(N+1)
+    print(s)
+else:
+    if N >=10:
+        s+=str(N)
+        print(s)
+    else:
+        s+= "0" + str(N)
+        print(s)

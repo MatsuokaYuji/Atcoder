@@ -1,13 +1,7 @@
 
 
 
+N = int(input())
 
 
-X,Y = map(int,input().split())
-
-ans = 0
-
-while X<Y:
-    ans+=1
-    X+=10
-print(ans)
+print(N//100)

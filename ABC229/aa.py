@@ -2,12 +2,13 @@
 
 
 
+S = input()
+T = input()
 
-X,Y = map(int,input().split())
-
-ans = 0
-
-while X<Y:
-    ans+=1
-    X+=10
-print(ans)
+if S.count("#") >=2 or T.count("#") >=2:
+    print("Yes")
+    exit()
+if (S[0] == "#" and T[1] == "#") or (S[1] == "#" and T[0] == "#"):
+    print("No")
+else:
+    print("Yes")

@@ -2,8 +2,6 @@
 
 
 
-
-
 # Union-Find 木
 class unionfind:
 	# n 頂点の Union-Find 木を作成
@@ -38,43 +36,19 @@ class unionfind:
 		return self.root(u) == self.root(v)
 
 
+# 隣接リストの作成
+N, M = map(int, input().split())
+#  クエリの処理
+uf = unionfind(N)
 
+ans = 0
+for i in range(M):
+	a,b = map(int, input().split())
+	a,b = a-1,b-1
+	if uf.root(a) == uf.root(b):
+		ans+=1
+	else:
+		uf.unite(a,b)
+print(ans)
+	
 
-
-
-
-def judge():
-        
-    # 隣接リストの作成
-    N, M = map(int, input().split())
-    #  クエリの処理
-    uf = unionfind(N)
-
-    C = [0] * N
-
-    for i in range(M):
-        a,b = map(int, input().split())
-        a,b = a-1,b-1
-        if uf.root(a) == uf.root(b):
-            print("No")
-            exit()
-        uf.unite(a,b)
-        C[a] +=1
-        C[b] +=1
-
-    d = 0
-    for i in range(N):
-        if C[i]>=3 or C[i]==0:
-            return False
-        if C[i]==1:
-            d+=1
-    if d ==2:
-        return True
-    else:
-        return False
-    # if uf.same(a,b):
-    #         return False
-    
-
-
-print("Yes" if judge() else "No")

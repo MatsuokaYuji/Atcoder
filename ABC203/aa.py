@@ -6,14 +6,29 @@
 
 
 
-S = input()
-d = set()
 
-for i in S:
-    d.add(i)
-if len(d) == 1:
-    print(1)
-if len(d) == 2:
-    print(3)
-if len(d) == 3:
-    print(6)
+
+
+
+
+
+
+
+
+a,b,c = map(int,input().split())
+
+tmp = a
+
+if tmp == b:
+    print(c)
+    exit()
+if c ==a:
+    print(b)
+    exit()
+if c ==b:
+    print(a)
+    exit()
+
+print(0)
+
+

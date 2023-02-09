@@ -5,15 +5,11 @@
 
 
 
+A,B,C = map(int,input().split())
 
-S = input()
-d = set()
-
-for i in S:
-    d.add(i)
-if len(d) == 1:
-    print(1)
-if len(d) == 2:
-    print(3)
-if len(d) == 3:
-    print(6)
+a = []
+a.append(A)
+a.append(B)
+a.append(C)
+a.sort()
+print(a[-1] + a[-2])

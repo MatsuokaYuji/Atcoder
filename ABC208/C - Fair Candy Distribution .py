@@ -2,25 +2,27 @@
 
 
 
-
-
-N,M = map(int,input().split())
+N,K = map(int,input().split())
 A = list(map(int, input().split()))
-B = list(map(int, input().split()))
-
-B.sort()
-from bisect import bisect_left,bisect
 
 
-ans = float("INF")
-for a in A:
-    i = bisect_left(B,a)
-    if 1<=i<M+1:
-        b1 = B[i-1]
-        ans = min(ans,abs(a-b1))
-    if 0<=i<M:
-        b2 = B[i] 
-        ans = min(ans,abs(a-b2))
-print(ans)
+all = 0
+
+if K>=N:
+    d = K//N
+
+    all+=d
+    K-=d* N
+from collections import defaultdict
+d = defaultdict(int)
+
+for i in range(N):
+    d[A[i]] +=all
+B = sorted(A)
+
+for i in range(K):
+    d[B[i]] +=1
 
 
+for i in A:
+    print(d[i])

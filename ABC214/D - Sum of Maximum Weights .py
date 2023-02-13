@@ -1,152 +1,141 @@
-# https://github.com/tatyam-prime/SortedSet/blob/main/SortedMultiset.py
-import math
-from bisect import bisect_left, bisect_right, insort
-from typing import Generic, Iterable, Iterator, TypeVar, Union, List
-T = TypeVar('T')
 
-class SortedMultiset(Generic[T]):
-    BUCKET_RATIO = 50
-    REBUILD_RATIO = 170
 
-    def _build(self, a=None) -> None:
-        "Evenly divide `a` into buckets."
-        if a is None: a = list(self)
-        size = self.size = len(a)
-        bucket_size = int(math.ceil(math.sqrt(size / self.BUCKET_RATIO)))
-        self.a = [a[size * i // bucket_size : size * (i + 1) // bucket_size] for i in range(bucket_size)]
-    
-    def __init__(self, a: Iterable[T] = []) -> None:
-        "Make a new SortedMultiset from iterable. / O(N) if sorted / O(N log N)"
-        a = list(a)
-        if not all(a[i] <= a[i + 1] for i in range(len(a) - 1)):
-            a = sorted(a)
-        self._build(a)
+# # Union-Find 木
+# class unionfind:
+# 	# n 頂点の Union-Find 木を作成
+# 	# （ここでは頂点番号が 1-indexed になるように実装しているが、0-indexed の場合は par, size のサイズは n でよい）
+# 	def __init__(self, n):
+# 		self.n = n
+# 		self.par = [ -1 ] * (n + 1) # 最初は親が無い
+# 		self.size = [ 1 ] * (n + 1) # 最初はグループの頂点数が 1
+	
+# 	# 頂点 x の根を返す関数
+# 	def root(self, x):
+# 		# 1 個先（親）がなくなる（つまり根に到達する）まで、1 個先（親）に進み続ける
+# 		while self.par[x] != -1:
+# 			x = self.par[x]
+# 		return x
+	
+# 	# 要素 u, v を統合する関数
+# 	def unite(self, u, v):
+# 		rootu = self.root(u)
+# 		rootv = self.root(v)
+# 		if rootu != rootv:
+# 			# u と v が異なるグループのときのみ処理を行う
+# 			if self.size[rootu] < self.size[rootv]:
+# 				self.par[rootu] = rootv
+# 				self.size[rootv] += self.size[rootu]
+# 			else:
+# 				self.par[rootv] = rootu
+# 				self.size[rootu] += self.size[rootv]
+	
+# 	#  要素 u と v が同一のグループかどうかを返す関数
+# 	def same(self, u, v):
+# 		return self.root(u) == self.root(v)
 
-    def __iter__(self) -> Iterator[T]:
-        for i in self.a:
-            for j in i: yield j
 
-    def __reversed__(self) -> Iterator[T]:
-        for i in reversed(self.a):
-            for j in reversed(i): yield j
-    
-    def __len__(self) -> int:
-        return self.size
-    
-    def __repr__(self) -> str:
-        return "SortedMultiset" + str(self.a)
-    
-    def __str__(self) -> str:
-        s = str(list(self))
-        return "{" + s[1 : len(s) - 1] + "}"
+# 別のuf、こっちの方がいいかも
+class UnionFind:
+    """
+    0-indexed
+    """
 
-    def _find_bucket(self, x: T) -> List[T]:
-        "Find the bucket which should contain x. self must not be empty."
-        for a in self.a:
-            if x <= a[-1]: return a
-        return a
+    from typing import List
 
-    def __contains__(self, x: T) -> bool:
-        if self.size == 0: return False
-        a = self._find_bucket(x)
-        i = bisect_left(a, x)
-        return i != len(a) and a[i] == x
+    def __init__(self, n):
+        self.n = n
+        self.parent = [-1] * n
 
-    def count(self, x: T) -> int:
-        "Count the number of x."
-        return self.index_right(x) - self.index(x)
+    def unite(self, x, y) -> int:
+        """
+        xとyを併合
+        """
 
-    def add(self, x: T) -> None:
-        "Add an element. / O(√N)"
-        if self.size == 0:
-            self.a = [[x]]
-            self.size = 1
-            return
-        a = self._find_bucket(x)
-        insort(a, x)
-        self.size += 1
-        if len(a) > len(self.a) * self.REBUILD_RATIO:
-            self._build()
+        x = self.root(x)
+        y = self.root(y)
 
-    def discard(self, x: T) -> bool:
-        "Remove an element and return True if removed. / O(√N)"
-        if self.size == 0: return False
-        a = self._find_bucket(x)
-        i = bisect_left(a, x)
-        if i == len(a) or a[i] != x: return False
-        a.pop(i)
-        self.size -= 1
-        if len(a) == 0: self._build()
-        return True
+        if x == y:
+            return 0
 
-    def lt(self, x: T) -> Union[T, None]:
-        "Find the largest element < x, or None if it doesn't exist."
-        for a in reversed(self.a):
-            if a[0] < x:
-                return a[bisect_left(a, x) - 1]
+        if self.parent[x] > self.parent[y]:
+            x, y = y, x
 
-    def le(self, x: T) -> Union[T, None]:
-        "Find the largest element <= x, or None if it doesn't exist."
-        for a in reversed(self.a):
-            if a[0] <= x:
-                return a[bisect_right(a, x) - 1]
+        self.parent[x] += self.parent[y]
+        self.parent[y] = x
 
-    def gt(self, x: T) -> Union[T, None]:
-        "Find the smallest element > x, or None if it doesn't exist."
-        for a in self.a:
-            if a[-1] > x:
-                return a[bisect_right(a, x)]
+        return self.parent[x]
 
-    def ge(self, x: T) -> Union[T, None]:
-        "Find the smallest element >= x, or None if it doesn't exist."
-        for a in self.a:
-            if a[-1] >= x:
-                return a[bisect_left(a, x)]
-    
-    def __getitem__(self, x: int) -> T:
-        "Return the x-th element, or IndexError if it doesn't exist."
-        if x < 0: x += self.size
-        if x < 0: raise IndexError
-        for a in self.a:
-            if x < len(a): return a[x]
-            x -= len(a)
-        raise IndexError
+    def is_same(self, x, y) -> bool:
+        """
+        xとyが同じ連結成分か判定
+        """
+        return self.root(x) == self.root(y)
 
-    def index(self, x: T) -> int:
-        "Count the number of elements < x."
-        ans = 0
-        for a in self.a:
-            if a[-1] >= x:
-                return ans + bisect_left(a, x)
-            ans += len(a)
-        return ans
+    def root(self, x) -> int:
+        """
+        xの根を取得
+        """
+        if self.parent[x] < 0:
+            return x
+        else:
+            self.parent[x] = self.root(self.parent[x])
+            return self.parent[x]
 
-    def index_right(self, x: T) -> int:
-        "Count the number of elements <= x."
-        ans = 0
-        for a in self.a:
-            if a[-1] > x:
-                return ans + bisect_right(a, x)
-            ans += len(a)
-        return ans
+    def size(self, x) -> int:
+        """
+        xが属する連結成分のサイズを取得
+        """
+        return -self.parent[self.root(x)]
 
-import sys
+    def all_sizes(self) -> List[int]:
+        """
+        全連結成分のサイズのリストを取得
+        計算量: O(N)
+        """
+        sizes = []
 
-readline = sys.stdin.readline
-L,Q = map(int,readline().split())
+        for i in range(self.n):
+            size = self.parent[i]
+            if size < 0:
+                sizes.append(-size)
+        return sizes
 
-S = SortedMultiset()
-S.add(0)
-S.add(L)
-for _ in range(Q):
-    query = list(map(int, input().split()))
-    q = query[0]
-    if q == 1:
-        x = query[1]
-        S.add(x)
-    elif q == 2:
-        x = query[1]
-        c = S.ge(x) # x以上の最小要素が昇順何番目か
-        d = S.le(x)
-        print(c-d)
-    
+    def groups(self) -> List[List[int]]:
+        """
+        全連結成分のサイズの内容のリストを取得
+        計算量: O(N・α(N))
+        """
+        groups = dict()
+
+        for i in range(self.n):
+            p = self.root(i)
+            if not groups.get(p):
+                groups[p] = []
+            groups[p].append(i)
+
+        return list(groups.values())
+
+
+
+
+# 最小全域木、クラスカル法のように解く、辺に注目
+N = int(input())
+uf = UnionFind(N)
+G = []
+for i in range(N-1):
+    u,v,w = map(int,input().split())
+    u-=1
+    v-=1
+    # 変の小さい順に処理するためwが先頭
+    G.append((w,u,v))
+G.sort()
+
+ans = 0
+
+for i in range(N-1):
+    w,u,v = G[i]
+    x = uf.size(u)
+    y = uf.size(v)
+    ans+= w*x*y
+    uf.unite(u,v)
+print(ans)

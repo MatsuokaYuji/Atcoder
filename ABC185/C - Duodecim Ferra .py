@@ -1,12 +1,5 @@
 
 
-
-
-
-
-
-
-
 # pythonで出す
 import math
 

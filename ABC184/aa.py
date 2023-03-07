@@ -3,13 +3,8 @@
 
 
 
+a,b = map(int,input().split())
+c,d = map(int,input().split())
 
-N = int(input())
 
-
-
-N-=1
-N//=100
-N+=1
-
-print(N)
+print(a*d-b*c)

@@ -117,36 +117,26 @@ class UnionFind:
         return list(groups.values())
 
 N, M = map(int, input().split())
-edges = [ list(map(int, input().split())) for i in range(M) ]
-
-G = [ list() for i in range(N + 1) ] # G[i] は頂点 i に隣接する頂点のリスト
-for a, b in edges:
-  a-=1
-  b-=1
-  G[a].append(b)
-  G[b].append(a)
-
-# クエリの処理
 uf = UnionFind(N)
 
-for i in range(len(G)):
-  for v in G[i]:
-    uf.unite(i,v)
+X = 0
+Y = 0
+for i in range(M):
+  a,b,c,d = input().split()
+  a = int(a)
+  c = int(c)
+  a-=1
+  c-=1
+  if uf.is_same(a,c):
+    X+=1
+  uf.unite(a,c)
 
-x = uf.groups()
-# print(G)
-# print(x)
 
-for i in range(len(x)):
-  c = x[i]
-  l = len(c)
-  tmp = 0
-  for num in c:
-    d = len(G[num])
-    tmp+=d
-  tmp//=2
-  if tmp != l:
-    # print(tmp,l)
-    print("No")
-    exit()
-print("Yes")
+all = uf.groups()
+# print(all)
+Y = len(all) - X
+print(X,Y)
+  
+
+
+

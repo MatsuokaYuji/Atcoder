@@ -1,38 +1,22 @@
-
-
-
-
-
-
-
-
-from itertools import product, permutations,combinations
-
-
-
-N,K = map(int,input().split())
-T = []
-for i in range(N):
-    B = list(map(int, input().split()))
-    T.append(B)
-
-
-
-A = [i+1 for i in range(N-1)]
+N = int(input())
+A = list(map(int, input().split()))
+print(A)
 
 ans = 0
-for i in permutations(A,N-1):
-    tmp = 0
-    x = i[0]
-    y = i[-1]
-    tmp += T[0][x]
-    tmp+= T[y][0]
-    for a in range(len(i)-1):
-        pre = i[a]
-        nex = i[a+1]
-        tmp+= T[pre][nex]
-    if tmp ==K:
-        ans+=1
 
+tmpMax = A[0] 
+# i = 0 - N-1
+# N =5 i= 0,1,2,3,4
+# [2, 1, 5, 4, 3]
+# 1>=2
+for i in range(N):
+    x = A[i]
+    if x>=tmpMax:
+        tmpMax = x
+    else:
+        d = tmpMax - x
+        ans+=d
 
 print(ans)
+
+    

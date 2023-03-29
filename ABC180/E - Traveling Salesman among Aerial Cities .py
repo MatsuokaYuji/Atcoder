@@ -18,6 +18,7 @@ for i in range(N):
 INF = float('inf')
 dp = [[INF] *N for i in range(2**N)]
 
+#bitdp
 dp[0][0] = 0
 # 動的計画法（dp[通った都市][今いる都市] となっている）
 for i in range(2**N):

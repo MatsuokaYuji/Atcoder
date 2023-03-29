@@ -6,14 +6,14 @@
 
 
 
-S = input()
-d = set()
 
-for i in S:
-    d.add(i)
-if len(d) == 1:
-    print(1)
-if len(d) == 2:
-    print(3)
-if len(d) == 3:
-    print(6)
+
+x = int(input())
+if 0<=x<40:
+    print(40-x)
+if 40<=x<70:
+    print(70-x)
+if 70<=x<90:
+    print(90-x)
+if 90<=x:
+    print("expert")

@@ -3,39 +3,46 @@
 
 
 
-N,W = map(int,input().split())
 
-A = []
-B = []
+
+
+
+
+N = int(input())
+
+
+S = input()
+s = list(S)
+
+W=[]
+R=[]
+
 for i in range(N):
-    s,t,p = map(int,input().split())
-    A.append((s,p))
-    B.append((t,-p))
+    if s[i]=="R":
+        R.append(i)
+    else:
+        W.append(i)
+R.sort(reverse=True)
 
-T = [0] * (11)
-print(A)
-print(B)
-# [(1, 5), (2, 4), (3, 6), (2, 1)]
-# [(3, -5), (4, -4), (10, -6), (4, -1)]
-for i in range(N):
-    x1 = A[i][0]
-    y1 = B[i][0]
-    x2 = A[i][1]
-    y2 = B[i][1]
-    T[x1] += x2
-    T[y1] += y2
-print(T)
-from itertools import accumulate
-b = list(accumulate(T)) # itertoolsの戻り値はイテレータとなっているので必要に応じてlist化します．
-print(b)
+Rl = len(R)
+Wl = len(W)
 
-for i in b:
-    if i>W:
-        print("No")
+if Rl ==0 or Wl==0:
+    print(0)
+    exit()
+Rm = R[0] 
+Wm = W[0]
+
+ans = 0
+r = 0
+w = 0
+while Rm>Wm:
+    ans+=1
+    r+=1
+    w+=1
+    if r>=Rl or w>=Wl:
+        print(ans)
         exit()
-print("Yes")
-
-
-
-
-
+    Rm = R[r]
+    Wm = W[w]
+print(ans)

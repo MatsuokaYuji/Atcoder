@@ -2,7 +2,7 @@
 
 
 
-# 後でテストケース確認
+# 後でテストケース確認 041のケース
 
 # すべての i=1,2,…,K について、下記の条件が成り立つ。
 # 頂点 piから距離がdi未満の頂点はすべて白で塗る
@@ -36,6 +36,13 @@ for i in range(K):
     if d!=0:
         ans[p] = 0
         seen[p] = 1
+    # これ追加で 034消えた
+    if d==0:
+        if ans[p]==0:
+            print("No")
+            exit()
+        ans[p]=1
+        continue
     while q:
         V,dist = q.popleft()
         # print(V,dist)

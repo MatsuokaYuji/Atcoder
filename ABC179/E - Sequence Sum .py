@@ -6,7 +6,7 @@
 
 
 
-
+# 繰り返し
 # 周期性
 n,x,m = map(int,input().split())
 

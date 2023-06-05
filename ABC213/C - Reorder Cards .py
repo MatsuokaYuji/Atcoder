@@ -4,7 +4,7 @@
 
 
 
-
+# 座標圧縮
 
 h,w,n = map(int,input().split())
 

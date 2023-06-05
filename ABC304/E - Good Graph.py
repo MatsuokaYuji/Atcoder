@@ -138,6 +138,7 @@ for i in range(Q):
   p,q = map(int,input().split())
   p = uf.root(p)
   q = uf.root(q)
+#   実際に辺を繋ぐのではなく、rootがngの集合に含まれているかどうかを見る
 #   print(i,"a")
   if (min(p,q),max(p,q)) in ng:
     print("No")

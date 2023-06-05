@@ -10,7 +10,7 @@ MOD = 998244353
 
 S = [tuple(map(int,input().split())) for i in range(K)]
 S.sort()
-
+#dp累積
 #dp高速化
 # dp[i-v] のvは区間の累積和
 dp = [0] * N

@@ -2,6 +2,7 @@
 
 import sys
 
+# オイラーツアー
 # 再帰呼び出しの深さの上限を 120000 に設定
 sys.setrecursionlimit(120000)
 

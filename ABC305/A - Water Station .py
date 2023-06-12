@@ -20,3 +20,8 @@ else:
 # print(s,t)
 
 
+# 四捨五入
+N = int(input())
+print(round(N / 5) * 5)
+
+

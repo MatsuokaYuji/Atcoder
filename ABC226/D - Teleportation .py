@@ -14,6 +14,7 @@ for i in range(N):
     d.append((x,y))
 
 for p in permutations(d,2):
+    print(p)
     t1 = p[0]
     t2 = p[1]
     xs = t1[0]- t2[0]
